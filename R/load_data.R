@@ -18,14 +18,30 @@ get_db_connection <- function() {
 }
 
 load_data <- function() {
-  con <- get_db_connection()
-
-  sql_text <- "
-    SELECT casualty_severity, sex_of_casualty
-    FROM stats19_casualties
-  "
-  df <- DBI::dbGetQuery(con, sql_text)
-
-  DBI::dbDisconnect(con)
-  df
+  readRenviron(".Renviron.R")
+  Sys.getenv("PGRUSER")
+  
+  conn <- DBI::dbConnect(
+    RPostgres::Postgres(),
+    dbname = Sys.getenv("PGRDATABASE"),
+    host = Sys.getenv("PGRHOST"),
+    user = Sys.getenv("PGRUSER"),
+    password = Sys.getenv("PGRPASSWORD"),
+    port = Sys.getenv("PGRPORT")
+  )
+  
+  DBI::dbIsValid(conn)
+  
+  tables <- DBI::dbListTables(conn)
+  tables
+  
+  casualties <- DBI::dbReadTable(conn, "stats19_casualties")
+  accidents <- DBI::dbReadTable(conn, "stats19_accidents")
+  vehicles <- DBI::dbReadTable(conn, "stats19_vehicles")
+  names(casualties)
+  names(accidents)
+  names(vehicles)
+  
+  DBI::dbDisconnect(conn)
+  return c
 }
