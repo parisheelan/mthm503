@@ -64,7 +64,7 @@ test_that("extrication_clean has no NA values in critical modeling columns", {
 
 test_that("extrication (response) is a factor with more than one level", {
   expect_true(is.factor(extrication_clean$extrication))
-  expect_gt(nlevels(extrication_clean$extrication), 1) # Ensure it's not degenerate
+  expect_gt(nlevels(extrication_clean$extrication), 1)
 })
 
 test_that("age_band is an ordered factor with specified levels", {
