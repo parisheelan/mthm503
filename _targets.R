@@ -2,9 +2,7 @@
 
 # Load the targets library
 library(targets)
-
-# Load other necessary packages that your functions will use.
-# It's good practice to list all packages here.
+# list all packages here.
 library(dplyr)
 library(skimr)
 library(tidyr)
@@ -22,15 +20,12 @@ library(scales)     # For scales::percent in plots
 tar_option_set(
   packages = c("dplyr", "skimr", "tidyr", "forcats", "DBI", "RPostgres",
                "tidymodels", "rsample", "kknn", "ranger", "ggplot2", "scales"),
-  # Optional: For larger datasets, consider 'format = "qs"' for faster I/O
-  # format = "qs"
 )
 
 # Source all R functions from the 'R' directory
 tar_source("R/functions.R")
 
 # Read .Renviron file to set environment variables for DB connection
-# This needs to be run by targets itself to make env vars available to targets' processes
 readRenviron(".Renviron.R")
 
 # Define the pipeline
